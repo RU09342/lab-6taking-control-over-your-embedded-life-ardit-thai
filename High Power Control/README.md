@@ -19,7 +19,9 @@ The advantage of MOSFETs is that they have a very low voltage threshold. This me
 The relay works by using an inductor to control a mechanical switch. Below is the schematic we used to build our relay.</br>
 ![relayhighpower](https://user-images.githubusercontent.com/14367479/32819397-0f20aac2-c997-11e7-9c55-a1e4b5b0066c.png)</br>
 When passing a constant current through an inductor, the inductors generates an electromagnetic field that pulls the switch, providing a path for a power source to a load. Because the relay is mechanical, it carries risks when used at higher frequencies. If the relay is used with a PWM cycle above 500 Hz, it runs the risks of welding to a contact, or otherwise failing to make contact with the closed (activated) contact when an EMF is generated.
-
+</br>
+![ezgif com-crop](https://user-images.githubusercontent.com/30231031/32976728-7a05dffa-cbeb-11e7-8fe8-3658e0766133.gif) 
+</br>
 ### Conclusion
 
 Although relays can be used to completely remove loading effects from a circuit, as it uses an EMF to control the switch, we find the shortcomings to be too significant to use over a MOSFET. MOSFETs can be used at much higher frequencies than relies with no worry of welding or failure. Since in the future we plan on driving devices with high frequency PWMs, we believe MOSFETs are the better option in this application. 
