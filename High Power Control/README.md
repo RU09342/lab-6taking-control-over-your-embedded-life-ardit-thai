@@ -1,16 +1,31 @@
-# Lab 6: "High Power" Control
-For starters, you will not be dealing with anything that is truly "high power". Instead, what I am considering "high power" is anything with the potential to damage or fry your microcontrollers if you were to drive them directly. The idea behind this part of the lab is to learn how not only to drive things that may require a high voltage or high current, but how to then protect your microcontroller from them.
+## Ardit Pranvoku and Thai Nghiem LCD display
 
-## Switching
-Most of you have used one of the types of switching circuits to control the RGB LEDs. For this part of the lab, you need to focus on the different types of switching circuits along with the differences in inductive and resistive loads.
+### High Power Control
 
-### Relays
-A relay is a electro-mechanical system which can open and close a switch based on an input. 
-![Relay](https://www.phidgets.com/docs/images/1/1d/3051_1_Relay_Diagram.jpg)
-These are extremely useful in situations where large amounts of current need to flow, such as in automotive applications, but they do have their limits. For starters, since the actuation process requires a constant current, sometimes this can be too much for your processor to handle. Second, a lot of these relays require higher than 3.3V, which limits how you can actually turn these things on and off. Using the MSP430G2553, control the state of a relay to drive a power resistor with +12V. Your README for this part should include a screenshot of the output of your MSP and the voltage across the resistor. Try to figure out the switching speed limitations of the relay experimentally.
+When driving loads that take more than 3.3 volts to drive, which is what the MSP430 is able to cover, then we must figure out an alternative way to power bigger devices such as fans or motors. Two ways two do this are mosfets and relays. We tested both and found that mosfets are preferable, though both have their own advantages and disadvantages.
 
-### MOSFET Switching
-The MOSFET switch is a very simple circuit which can be used in a multitude of applications. One of the most important features of the MOSFET Switch is the near zero current it takes to switch the MOSFET from an on to an off state. There are two main architectures, low-side and high-side switch, each requiring a different type of MOSFET. Using the MSP430G2553, drive a power resistor with +12V in the same fashion as the relay. Obtain an MSP430G2553 voltage output along with the voltage through the power resistor. Try to figure out the switching speed limitations of the MOSFET experimentally.
+### N-Channel Mosfet Switching
 
-## Deliverables
-Along with what was asked in each part, you will need to utilize the DMM to determine what the current draw from each switch is and if that falls into spec with the Microcontroller. You need to then come up with the best configuration you can think of using to control something that requires large current, but also protects your processor from damage. The reason I am asking you to do this with just the G2553 is: A) The code is just generating a square wave, and B) this part of the lab runs the highest chance of damaging your parts and we have spare G2553's just in case.
+In order to test our mosfet, we implemented it in the following schematic with the MSP430 providing a PWM signal. </br>
+![mosfethighpower](https://user-images.githubusercontent.com/14367479/32818587-2075ff98-c992-11e7-8c45-ea35fd09e82b.png)
+![mosfethighpower](https://user-images.githubusercontent.com/14367479/32818606-3b77b390-c992-11e7-95d4-53a7486a7832.JPG)
+
+The advantage of MOSFETs is that they have a very low voltage threshold. This means that the voltage provided by almost any voltage source is strong enough to activate a MOSFET. Our MSP4305529 was easily able to accomplish this with the 3.3 Volts coming off of the GPIOs. When the MOSFET is activated, it provides a path for a stronger power source to a load, while still allowing the MSP to control the device.
+
+![mosfethighpower 1](https://user-images.githubusercontent.com/14367479/32819401-143c91d8-c997-11e7-95a5-67638fef0911.gif)
+
+### Relay Switching
+
+The relay works by using an inductor to control a mechanical switch. Below is the schematic we used to build our relay.</br>
+![relayhighpower](https://user-images.githubusercontent.com/14367479/32819397-0f20aac2-c997-11e7-9c55-a1e4b5b0066c.png)</br>
+When passing a constant current through an inductor, the inductors generates an electromagnetic field that pulls the switch, providing a path for a power source to a load. Because the relay is mechanical, it carries risks when used at higher frequencies. If the relay is used with a PWM cycle above 500 Hz, it runs the risks of welding to a contact, or otherwise failing to make contact with the closed (activated) contact when an EMF is generated.
+
+### Conclusion
+
+Although relays can be used to completely remove loading effects from a circuit, as it uses an EMF to control the switch, we find the shortcomings to be too significant to use over a MOSFET. MOSFETs can be used at much higher frequencies than relies with no worry of welding or failure. Since in the future we plan on driving devices with high frequency PWMs, we believe MOSFETs are the better option in this application. 
+
+### High Current Application
+
+The following circuit can be used for high current applications where the MSP4305529 is incapable of providing the voltage or current needed to drive the device. Both a MOSFET and a relay are used. <br>
+
+![optimalhighpower 1](https://user-images.githubusercontent.com/14367479/32819469-770c4682-c997-11e7-849d-5550714dde9b.png)
