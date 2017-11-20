@@ -29,7 +29,7 @@ Overall, the integrator circuit worked successfully,
 as we saw our square wave input be integrated into a sawtooth wave output, which was what we expected.
 
 ### R2R DAC
-An 8 Bit ladder works by splitting every voltage coming in by 2 the power of its significance in the binary number. The most significant number is split by 2, the next most is split by 4, and so on. So if I were to input 1010, the the first voltage would be split by 2 to the power of 1, because the first 1 (that represents an 8 in decimal) is the most significant. Thus, it will contribute half of the incoming voltage. In contrast to this, the 3rd most significant 1 (that represents a 2) will be split by 2 to the power of 3. Thus, it will contribute an eighth of the incoming voltage. The 0s in the binary number are connected to ground, and contribute nothing.
+An 8 Bit ladder works by using 8 resistors (In our schematic, this refers to the 10k resistors) to split an incoming voltage coming in by 2 to the power of its place in the binary number, counting from left to right. The resistor closest to the output is controlled by the most significant bit, or the first bit, and splits the voltage by 2^1, contributing half of the total voltage. The resistor farthest from the output is controlled by the least significant bit, or the eighth bit and splits the voltage by 2^8, contributing 1/256 of the total voltage. If the binary input was 1001 0001, the output voltage would be the total voltage*(1/2 + 1/16 + 1/256). 1/2 of the total voltage is being controlled by the first 1, 1/16 of the total voltage is being controlled by the 4th 1, and the final 1/256 of the total voltage is being controlled by the 8th 1. The 0s in the binary number are connected to ground, and contribute nothing.
 We built a digital to analog circuit using an 8-bit R2R ladder. <br />
 ![r2r_dac_schem](https://user-images.githubusercontent.com/30231031/32421233-42895d08-c264-11e7-9c85-8ea193d4f999.png)
 <br />
@@ -46,9 +46,18 @@ Below is the circuit we built: <br />
 <br />
 
 ### Loading Effect
-In order to get a general idea of the loading effects of the MSP boards, we built a model in TINA-TI to approximate the effect of the boards. When we put a low resistance to represent the MSP430 (R17) in our R2R ladder, the loading effect was low, and output voltage was close to the expected value. However, when we increased the representative resistance of our MSP430 to higher resistances, our output voltage decreased, as the MSP430 resistor took a larger voltage drop from the power source. Thus, we theorize that the true resistance of the MSP430 is close to 100 Ohms, because our analytical output voltage in our R2R ladder was close to our experimental value. (Within .1 Volts) In our model, setting R17 as 100 Ohms resulted in our output voltage being 0.03 Volts lower than our expected  value.
-Below is the simulation result we got in TINA_TI. <br \>
-![loadingeffect_schem](https://user-images.githubusercontent.com/30231031/32421486-28614f32-c267-11e7-9d8e-d2f21dc4ef3f.png)
+In order to test the effect of a load attached to the output of our integrator, we put different resistors in series with the output of our integrator. We used three resistors with values of 100 Ohms, 220k Ohms, and 810k Ohms to see what kind of effect it would have on our sawtooth wave. Below are the results. 
+<br/>
+![100 ohm integrator](https://user-images.githubusercontent.com/14367479/32998009-3a259756-cd65-11e7-9a63-e7a3962ce74a.jpg)
+A 100 Ohm load doesn't have an apparent effect on the sawtooth wave from the integrator.
+
+![220k ohm integrator](https://user-images.githubusercontent.com/14367479/32998010-3b7cd40c-cd65-11e7-8a19-c63a0f998029.jpg)
+Putting a 220k Ohm resistor in series with the output seems to cause the peaks to become less sharp, so that it's not reaching the original peak to peak voltage. The peak to peak voltage drops from 3.7 V to 3.04 V.
+
+![810k ohm integrator](https://user-images.githubusercontent.com/14367479/32998011-3cb41556-cd65-11e7-944b-24cbbde39cf9.jpg)
+A 810k Ohm resistor seems to further intensify the softening effect, and further reduces the peak to peak voltage from 3.04V too 1.95V. Overall however, the wave maintains its sawtooth shape. 
+<br/>
+
 
 ### Bill of Material 
 ![billofmaterial](https://user-images.githubusercontent.com/30231031/32694469-7d63bde8-c70e-11e7-8cbf-2dc978e872e9.png)
