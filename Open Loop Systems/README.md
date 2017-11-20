@@ -65,6 +65,11 @@ Below is the output voltage from the LM35. Over a period of 50 seconds, the volt
 
 ![slope](https://user-images.githubusercontent.com/14367479/32695403-8d5ab9d0-c728-11e7-8368-4f664b387207.JPG)
 
+The duty cycle of the fan vs the temperature of the LM35 is shown below. Because the MSP430 is bad at using exponential functions, the graph below can be represented using 3 piecewise linear function, each linear function representing a portion of the duty cycle. The first function would be from 0 to 10% duty cycle, the second function from 10 to 30% duty cycle, and the last function from 30 to 100% duty cycle.
+
+![asd](https://user-images.githubusercontent.com/14367479/33041524-9b12a764-ce0c-11e7-826f-d55747548450.JPG)
+
+
 ### Breadboard
 
 Our breadboard configuration is shown below </br>
