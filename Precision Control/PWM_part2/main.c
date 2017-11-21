@@ -15,7 +15,7 @@
 //            |                 |
 //            |             P1.0|-->LED
 //
-//   Thai Nghiem (collaborate with Matthew Rogdrigue)
+//   Thai Nghiem (collaborate with Matthew Rogdriguez)
 //   Rowan University
 //   September 2017
 //   Built with CCSv4 and IAR Embedded Workbench Version: 4.21
@@ -31,7 +31,14 @@ int main(void) {
     P1DIR |= BIT0;                          // Set P1.0 to output direction
     P1OUT &= ~BIT0;                         // Switch LED off
 
-
+	//Set up timer 
+    TA0CCTL1 = OUTMOD_7;                    // Reset/Set Mode
+    TA0CTL = TASSEL_2 + MC_1 +TACLR ;       // SMCLK / Upmode
+    TA0CCR0 = 50-1;                        // PWM Frequency 10 kHz
+    TA0CCR1 = 25-1;                           // 50% Duty Cycle
+    P1SEL0 |= BIT0;                         // PWM output to LED P1.0
+    P1SEL1 &= ~BIT0;
+	
     P1DIR |=BIT1;                           //set Port 1.1 output ---LED
     P1OUT &= ~BIT1;                         //Clear P1.1
 
@@ -39,12 +46,6 @@ int main(void) {
     P5OUT |= BIT6;                          // Configure P5.6 for Pull-Up
     P5REN |= BIT6;                          // Enable Pull Up of P5.6
 
-    TA0CCTL1 = OUTMOD_7;                    // Reset/Set Mode
-    TA0CTL = TASSEL_2 + MC_1 +TACLR ;       // SMCLK / Upmode
-    TA0CCR0 = 50-1;                        // PWM Frequency 10 kHz
-    TA0CCR1 = 25-1;                           // 50% Duty Cycle
-    P1SEL0 |= BIT0;                         // PWM output to LED P1.0
-    P1SEL1 &= ~BIT0;
 
     while(1)
     {

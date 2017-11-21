@@ -58,6 +58,14 @@ Putting a 220k Ohm resistor in series with the output seems to cause the peaks t
 A 810k Ohm resistor seems to further intensify the softening effect, and further reduces the peak to peak voltage from 3.04V too 1.95V. Overall however, the wave maintains its sawtooth shape. 
 <br/>
 
+### Triangle Wave
+A series of triangle wave with difference frequency was generated. Below are the FFT result collected through the scope. <br />
+At 5 kHz <br />
+![5khz](https://user-images.githubusercontent.com/30231031/33102778-67ac4e6c-ceec-11e7-8222-a67f42862e0f.JPG)
+At 28 kHz <br />
+![28khz](https://user-images.githubusercontent.com/30231031/33102780-6b0f1922-ceec-11e7-97c5-3d9f42912fed.JPG)
+At 51 kHz <br />
+![51khz](https://user-images.githubusercontent.com/30231031/33102783-6ce5c1b0-ceec-11e7-9f98-ad889fb954c0.JPG)
 
 ### Bill of Material 
 ![billofmaterial](https://user-images.githubusercontent.com/30231031/32694469-7d63bde8-c70e-11e7-8cbf-2dc978e872e9.png)
