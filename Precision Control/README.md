@@ -59,7 +59,7 @@ A 810k Ohm resistor seems to further intensify the softening effect, and further
 <br/>
 
 ### Triangle Wave
-A series of triangle wave with difference frequency was generated. Below are the FFT result collected through the scope. <br />
+Using the integrator circuit created in "PWM part 2" section, a series of triangle wave with difference frequency was generated. Below are the FFT result collected through the scope. <br />
 At 5 kHz <br />
 ![5khz](https://user-images.githubusercontent.com/30231031/33102778-67ac4e6c-ceec-11e7-8222-a67f42862e0f.JPG)
 At 28 kHz <br />
