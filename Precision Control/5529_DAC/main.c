@@ -66,37 +66,18 @@
 #include <msp430.h> 
 
 unsigned int adc_value =0;
+void UARTinit(void);
+void mostSignificant(void);
+void leastSignificant(void);
 
 int main(void)
 {
     WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
 
-    //Configure the port to be used as ADC input
-
-    //Pick P1.2, P1.3, P1.4, and P1.5 as output for most significant bits
-    P1DIR = BIT2 + BIT3 + BIT4 + BIT5;
-    P1OUT &= ~(BIT2 + BIT3 + BIT4 + BIT5);
-
-    //Pick P2.4, and P2.5, as output
-    P2DIR = BIT4 + BIT5;
-    P2OUT &= ~(BIT4 + BIT5);
-
-    //Pick P4.0, and P4.3, as output for least significant bits
-    P4DIR = BIT0 + BIT3;
-    P4OUT &= ~(BIT0 + BIT3);
-
-    P3SEL |= BIT3;          // UART TX
-    P3SEL |= BIT4;          // UART RX
-    UCA0CTL1 |= UCSWRST;    // Resets state machine
-    UCA0CTL1 |= UCSSEL_2;   // SMCLK
-    UCA0BR0 = 6;            // 9600 Baud Rate
-    UCA0BR1 = 0;            // 9600 Baud Rate
-    UCA0MCTL |= UCBRS_0;    // Modulation
-    UCA0MCTL |= UCBRF_13;   // Modulation
-    UCA0MCTL |= UCOS16;     // Modulation
-    UCA0CTL1 &= ~UCSWRST;   // Initializes the state machine
-    UCA0IE |= UCRXIE;
-
+    //Port configurations to be used as ADC input
+    mostSignificant();
+    leastSignificant();
+    UARTinit();  //initialize UART
 
     __bis_SR_register(LPM0_bits + GIE); // Enter LPM0, interrupts enabled
     __no_operation(); // For debugger
@@ -172,9 +153,35 @@ void __attribute__ ((interrupt(USCI_A0_VECTOR))) USCI_A0_ISR (void)
     else{
         P4OUT &= ~BIT3;
     }
-
-
-
-
 }
+    //UART initialization
+    void UARTinit(){
+        P3SEL |= BIT3;          // UART TX
+        P3SEL |= BIT4;          // UART RX
+        UCA0CTL1 |= UCSWRST;    // Resets state machine
+        UCA0CTL1 |= UCSSEL_2;   // SMCLK
+        UCA0BR0 = 6;            // 9600 Baud Rate
+        UCA0BR1 = 0;            // 9600 Baud Rate
+        UCA0MCTL |= UCBRS_0;    // Modulation
+        UCA0MCTL |= UCBRF_13;   // Modulation
+        UCA0MCTL |= UCOS16;     // Modulation
+        UCA0CTL1 &= ~UCSWRST;   // Initializes the state machine
+        UCA0IE |= UCRXIE;
+    }
+
+    void mostSignificant(){
+        //P1.2, P1.3, P1.4, and P1.5 are chosen as output for most significant bits
+        P1DIR = BIT2 + BIT3 + BIT4 + BIT5;
+        P1OUT &= ~(BIT2 + BIT3 + BIT4 + BIT5);
+    }
+    void leastSignificant(){
+        //P4.0, and P4.3 are chosen as output for least significant bits
+        P4DIR = BIT0 + BIT3;
+        P4OUT &= ~(BIT0 + BIT3);
+        //P2.4, and P2.5 are chosen as output
+        P2DIR = BIT4 + BIT5;
+        P2OUT &= ~(BIT4 + BIT5);
+    }
+
+
 
