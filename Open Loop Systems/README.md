@@ -82,7 +82,14 @@ The lightbulb is used to test the output of our PWM to troubleshoot.
 
 Somethings not covered in the overview is the 100 Ohm resistor located right after the voltage regulator. This is used to dissipate power. The OP amp is used as a noninverting amplifier. The 100k resistor and the 5k resistor result in a gain of (100/5)+1, or 21x. This is because the signal coming out of the MSP430 PWM is not strong enough to drive the fan, and must be amplified. 
 </br>
+
 ![fancontrol](https://user-images.githubusercontent.com/14367479/32695454-98d61cf8-c72a-11e7-9941-7654398765ab.png)
+
+### System Modeling
+
+Below are the three piecewise functions we came up with. Each of the piecewise function controls the duty cycle for different ranges of input temperature. We formulated these functions by developing a relationship between the duty cycle and the temperature. Using this relationship, we obtained a slope and a y intercept so that a target temperature could be directly converted to a duty cycle that would obtain that target temperature.
+</br>
+![openloop](https://user-images.githubusercontent.com/14367479/33250731-4c2b8550-d300-11e7-8bfa-14344c8c5647.png)
 
 
 
